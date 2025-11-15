@@ -1,0 +1,74 @@
+# ============================================================================
+# QRadar Collector - Poetry Project Configuration
+# ============================================================================
+# This file defines the project metadata, dependencies, and build settings
+# for the barebones QRadar collector that integrates with OpenBAS/OpenAEV.
+#
+# Key dependencies:
+# - pyoaev: OpenAEV Python client (with prod/local/current extras)
+# - pydantic: Data validation and settings management
+# - requests: HTTP client for QRadar REST API calls
+# ============================================================================
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+packages = [{ include = "src" }]
+
+[project]
+name = "QRadarCollector"
+version = "1.0.0"
+description = "Barebones collector for IBM QRadar SIEM integration with OpenBAS/OpenAEV."
+readme = "README.md"
+
+requires-python = ">=3.11,<3.14"
+dynamic = ["dependencies"]
+
+[tool.poetry.dependencies]
+python = ">=3.11,<3.14"
+pyoaev = [
+    {markers = "extra == 'prod' and extra != 'local' and extra != 'current'", version = "^1.18.20"},
+    {markers = "extra == 'local' and extra != 'current' and extra != 'prod'", path = "../../client-python", develop = true},
+    {markers = "extra == 'current' and extra != 'prod' and extra != 'local'", git = "https://github.com/OpenAEV-Platform/client-python.git", branch = "release/current"},
+]
+pydantic = "^2.11.7"
+pydantic-settings = "^2.10.1"
+requests = "^2.32.5"
+
+[tool.poetry.extras]
+prod = ["pyoaev"]
+current = ["pyoaev"]
+local = ["pyoaev"]
+
+[tool.poetry.group.dev.dependencies]
+isort = "^6.0.1"
+ruff = "^0.12.11"
+mypy = "^1.17.1"
+black = "^25.1.0"
+
+[project.scripts]
+QRadarCollector = "src.__main__:main"
+
+[tool.pytest.ini_options]
+testpaths = ["./tests"]
+
+[tool.ruff]
+exclude = [
+    ".git",
+    ".venv",
+    "__pycache__",
+    "build",
+    "dist",
+]
+target-version = "py312"
+
+[tool.ruff.lint]
+ignore = ["E501", "F821"]
+select = ["E", "F", "W"]
+
+[tool.mypy]
+strict = true
+exclude = ['^tests', '^build', '^dist']
+plugins = ["pydantic.mypy"]

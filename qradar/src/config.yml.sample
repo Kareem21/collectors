@@ -1,0 +1,51 @@
+# ============================================================================
+# QRadar Collector - Sample Configuration
+# ============================================================================
+# Copy this file to config.yml and update with your actual values.
+#
+# Configuration sources (in order of precedence):
+# 1. Environment variables (e.g., OPENAEV_URL, QRADAR_BASE_URL)
+# 2. This YAML file (config.yml)
+# 3. Default values from code
+# ============================================================================
+
+# OpenBAS/OpenAEV Platform Settings
+openaev:
+  url: "https://openbas.example.com"           # Your OpenBAS instance URL
+  token: "your-openaev-api-token-here"         # OpenBAS API token
+
+# Generic Collector Settings
+collector:
+  id: "qradar--12345678-1234-1234-1234-123456789abc"  # Unique UUID for this collector
+  name: "QRadar Production Collector"                  # Human-readable name
+  period: "PT5M"                                       # Collection interval (5 minutes)
+  log_level: "info"                                    # Logging: debug, info, warn, error
+  platform: "SIEM"                                     # Platform type
+
+# QRadar SIEM Settings
+qradar:
+  base_url: "https://10.10.0.255"              # Your QRadar Console URL
+  sec_token: "your-qradar-sec-token-here"      # QRadar SEC API token
+  verify_ssl: false                             # Set to true if using valid SSL cert
+  time_window: "PT1H"                          # How far back to search (1 hour)
+  max_retry: 3                                 # Number of retry attempts
+  offset: "PT30S"                              # Delay between retries (30 seconds)
+
+# ============================================================================
+# How to Get QRadar SEC Token:
+# 1. Log into QRadar Console
+# 2. Navigate to Admin → Authorized Services
+# 3. Click "Create New Token"
+# 4. Copy the generated token
+# ============================================================================
+
+# ============================================================================
+# Environment Variable Examples:
+#
+# export OPENAEV_URL="https://openbas.example.com"
+# export OPENAEV_TOKEN="your-token"
+# export COLLECTOR_ID="qradar--12345678-1234-1234-1234-123456789abc"
+# export QRADAR_BASE_URL="https://10.10.0.255"
+# export QRADAR_SEC_TOKEN="your-qradar-token"
+# export QRADAR_VERIFY_SSL="false"
+# ============================================================================
