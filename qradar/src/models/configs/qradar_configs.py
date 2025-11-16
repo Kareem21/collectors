@@ -12,6 +12,7 @@ Key settings:
 - time_window: How far back to search for offenses (default: 1 hour)
 - max_retry: Number of retry attempts for API calls
 - offset: Delay between retries in seconds
+- api_version: QRadar API version (default: 25.0)
 ============================================================================
 """
 
@@ -65,6 +66,11 @@ class QRadarSettings(BaseSettings):
     offset: timedelta = Field(
         default=timedelta(seconds=30),
         description="Delay between retry attempts",
+    )
+
+    api_version: str = Field(
+        default="25.0",
+        description="QRadar API version (e.g., 25.0, 14.0)",
     )
 
     @field_validator("time_window", "offset", mode="before")

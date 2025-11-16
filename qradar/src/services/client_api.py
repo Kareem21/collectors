@@ -59,6 +59,7 @@ class QRadarClientAPI:
         self.sec_token = self.config.qradar.sec_token.get_secret_value()
         self.verify_ssl = self.config.qradar.verify_ssl
         self.time_window = self.config.qradar.time_window
+        self.api_version = self.config.qradar.api_version
 
         # Disable SSL warnings if verify_ssl is False
         if not self.verify_ssl:
@@ -81,7 +82,8 @@ class QRadarClientAPI:
             {
                 "SEC": self.sec_token,
                 "Accept": "application/json",
-                "Version": "14.0",  # QRadar API version
+                "Version": self.api_version,
+                "Allow-Hidden": "True",
             }
         )
         session.verify = self.verify_ssl

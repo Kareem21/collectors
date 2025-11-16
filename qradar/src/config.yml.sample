@@ -27,6 +27,7 @@ qradar:
   base_url: "https://10.10.0.255"              # Your QRadar Console URL
   sec_token: "your-qradar-sec-token-here"      # QRadar SEC API token
   verify_ssl: false                             # Set to true if using valid SSL cert
+  api_version: "25.0"                          # QRadar API version (e.g., 25.0, 14.0)
   time_window: "PT1H"                          # How far back to search (1 hour)
   max_retry: 3                                 # Number of retry attempts
   offset: "PT30S"                              # Delay between retries (30 seconds)
@@ -48,4 +49,5 @@ qradar:
 # export QRADAR_BASE_URL="https://10.10.0.255"
 # export QRADAR_SEC_TOKEN="your-qradar-token"
 # export QRADAR_VERIFY_SSL="false"
+# export QRADAR_API_VERSION="25.0"
 # ============================================================================
