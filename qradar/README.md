@@ -139,6 +139,46 @@ The barebones collector supports these signature types:
 - ❌ `parent_process_name` (QRadar doesn't track this well)
 - ❌ Prevention expectations (QRadar is detection-only SIEM)
 
+## 📝 Understanding OpenBAS Expectations
+
+### Where Do Expectations Come From?
+
+**Expectations are created in OpenBAS**, not by the collector. Here's how they work:
+
+1. **In OpenBAS**: You create a **Simulation** → **Inject** (simulated attack/event)
+2. **Add Detection Expectation** to that inject
+3. **Inject contains signatures** (source IP, destination IP) - these define what to look for
+4. **Assign expectation** to your QRadar collector ID
+5. **Collector fetches** the expectation with its signatures automatically
+6. **Collector validates** by querying QRadar for matching offenses
+7. **Collector updates** the expectation status: "Detected" (score=100) or "Not Detected" (score=0)
+
+### How to Create an Expectation in OpenBAS
+
+1. Navigate to **Simulations** → **[Your Exercise]** → **Injects**
+2. Create or select an inject (e.g., "Malicious Traffic Test")
+3. Define inject signatures:
+   - `source_ipv4_address`: `192.168.1.100`
+   - `target_ipv4_address`: `10.0.0.50`
+4. Click **Add Expectation**
+5. Select:
+   - **Type**: Detection
+   - **Collector**: Your QRadar collector ID
+   - **Expiration**: 6 hours (default)
+6. Save the expectation
+
+**The collector automatically gets the signatures from the inject** - you don't manually enter IPs in the expectation form.
+
+### What the Collector Does
+
+- ✅ **Fetches** expectations assigned to its collector ID
+- ✅ **Extracts** signatures from inject/expectation automatically
+- ✅ **Queries** QRadar for offenses matching those signatures
+- ✅ **Validates** automatically (no manual intervention)
+- ✅ **Updates** expectation status back to OpenBAS
+
+**You don't need to configure anything in the collector for individual expectations** - it handles them all automatically based on the signatures in OpenBAS.
+
 ## 🔄 How It Works
 
 ### Processing Flow
